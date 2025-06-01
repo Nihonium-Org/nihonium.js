@@ -38,7 +38,8 @@
     "lint": "biome check",
     "lint:fix": "biome check --write --unsafe .",
     "typecheck": "tsc --noEmit",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "test": "jest"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
@@ -49,6 +50,9 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "ky": "^1.8.1"
+    "ky": "^1.8.1",
+    "@types/jest": "^29.5.14",
+    "axios": "^1.9.0",
+    "jest": "^29.7.0"
   }
 }
