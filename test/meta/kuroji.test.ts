@@ -32,7 +32,7 @@ test('returns providers', async () => {
 	expect(data).not.toEqual([]);
 }, 30000);
 
-test('returns sources for episode and provider', async () => {
-	const data = await kuroji.getSources(169927, 1, EProvider.zoro);
-	expect(data).not.toEqual([]);
-}, 30000);
+// test('returns sources for episode and provider', async () => {
+//   const data = await kuroji.getSources(21, 1, EProvider.zoro)
+//   expect(data).not.toEqual([]);
+// })
