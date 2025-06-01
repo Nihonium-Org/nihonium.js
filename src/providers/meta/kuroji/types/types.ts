@@ -239,22 +239,29 @@ export interface IBasicKuroji {
 }
 
 export interface IFranchise {
-  cover?: string,
-  banner?: string,
-  title?: string,
-  franchise?: string,
-  description?: string,
+	cover?: string;
+	banner?: string;
+	title?: string;
+	franchise?: string;
+	description?: string;
 }
 
-export type Weekday = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
+export type Weekday =
+	| 'monday'
+	| 'tuesday'
+	| 'wednesday'
+	| 'thursday'
+	| 'friday'
+	| 'saturday'
+	| 'sunday';
 
 export type TSchedule = {
-  [key in Weekday]: IScheduleData
-}
+	[key in Weekday]: IScheduleData;
+};
 
 export interface IScheduleData {
-  current: boolean
-  data: IBasicKuroji[]
+	current: boolean;
+	data: IBasicKuroji[];
 }
 
 /*
@@ -457,13 +464,13 @@ export interface Response<T> {
 }
 
 export interface SearchResponse<T> extends Response<T> {
-  franchise: FranchiseResponse
+	franchise: FranchiseResponse;
 }
 
 export interface FranchiseResponse {
-  pageInfo: PageInfo
-  franchise: IFranchise
-  data: IBasicKuroji[]
+	pageInfo: PageInfo;
+	franchise: IFranchise;
+	data: IBasicKuroji[];
 }
 
 export interface PageInfo {
