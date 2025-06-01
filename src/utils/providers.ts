@@ -1,8 +1,6 @@
-import { META } from '../providers'
+import { META } from '../providers';
 
 export const PROVIDERS = {
-  ANIME: [],
-  META: [
-    new META.Kuroji(),
-  ]
-}
+	ANIME: [],
+	META: [new META.Kuroji()],
+};

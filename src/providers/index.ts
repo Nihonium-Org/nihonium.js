@@ -1,7 +1,4 @@
-import ANIME from './anime'
-import META from './meta'
+import ANIME from './anime';
+import META from './meta';
 
-export {
-  ANIME,
-  META
-}
+export { ANIME, META };
