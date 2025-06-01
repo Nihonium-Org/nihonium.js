@@ -1,7 +1,7 @@
 import { Provider } from '../../../models'
 import type { ISource } from '../../../models/types'
 import { convertFilterToParams, type FilterDto } from './types/FilterDto'
-import type { Response, EProvider, IBasicKuroji, IEpisode, IKuroji, IProvider } from './types/types'
+import type { Response, EProvider, IBasicKuroji, IEpisode, IKuroji, IProvider, SearchResponse, ICharacterEdge, TSchedule, FranchiseResponse, ITag } from './types/types'
 
 class Kuroji extends Provider {
   override readonly name = 'Kuroji';
@@ -23,7 +23,7 @@ class Kuroji extends Provider {
     }
   }
 
-  async search(q: string): Promise<Response<IBasicKuroji>> {
+  async search(q: string): Promise<SearchResponse<IBasicKuroji>> {
     try {
       const response = await this.client.get(`${this.baseUrl}/api/anime/search/${q}`, {
         headers: this.Headers(),
@@ -44,6 +44,108 @@ class Kuroji extends Provider {
       });
 
       return response.data;
+    } catch (err: any) {
+      throw new Error(err)
+    }
+  }
+
+  async getRecommendations(id: number, filter: FilterDto): Promise<Response<IBasicKuroji>> {
+    try {
+      const params = convertFilterToParams(filter)
+      const queryString = '?' + new URLSearchParams(params).toString()
+      const response = await this.client.get(`${this.baseUrl}/api/anime/info/${id}/recommendations${queryString}`, {
+        headers: this.Headers(),
+      })
+
+      return response.data
+    } catch (err: any) {
+      throw new Error(err)
+    }
+  }
+
+  async getChronology(id: number, filter: FilterDto): Promise<Response<IBasicKuroji>> {
+    try {
+      const params = convertFilterToParams(filter)
+      const queryString = '?' + new URLSearchParams(params).toString()
+      const response = await this.client.get(`${this.baseUrl}/api/anime/info/${id}/chronology${queryString}`, {
+        headers: this.Headers(),
+      })
+
+      return response.data
+    } catch (err: any) {
+      throw new Error(err)
+    }
+  }
+
+  async getFranchise(franchise: string, filter: FilterDto): Promise<FranchiseResponse> {
+    try {
+      const params = convertFilterToParams(filter)
+      const queryString = '?' + new URLSearchParams(params).toString()
+      const response = await this.client.get(`${this.baseUrl}/api/anime/franchise/${franchise}${queryString}`, {
+        headers: this.Headers(),
+      })
+
+      return response.data
+    } catch (err: any) {
+      throw new Error(err)
+    }
+  }
+
+  async getCharacters(id: number, page: number = 1, perPage: number = 25): Promise<Response<ICharacterEdge[]>> {
+    try {
+      const response = await this.client.get(`${this.baseUrl}/api/anime/info/${id}/characters?page=${page}&perPage=${perPage}`, {
+        headers: this.Headers(),
+      })
+
+      return response.data
+    } catch (err: any) {
+      throw new Error(err)
+    }
+  }
+
+  async getRandom(): Promise<IKuroji> {
+    try {
+      const response = await this.client.get(`${this.baseUrl}/api/anime/random`, {
+        headers: this.Headers(),
+      })
+
+      return response.data
+    } catch (err: any) {
+      throw new Error(err)
+    }
+  }
+
+  async getSchedule(): Promise<TSchedule> {
+    try {
+      const response = await this.client.get(`${this.baseUrl}/api/anime/schedule`, {
+        headers: this.Headers(),
+      })
+
+      return response.data
+    } catch (err: any) {
+      throw new Error(err)
+    }
+  }
+
+  async getAllGenres(): Promise<string[]> {
+    try {
+      const response = await this.client.get(`${this.baseUrl}/api/anime/genres`, {
+        headers: this.Headers(),
+      })
+
+      return response.data
+    } catch (err: any) {
+      throw new Error(err)
+    }
+  }
+
+  async getAllTags(page: number = 1, perPage: number = 25): Promise<Response<ITag[]>> {
+    try {
+      const response = await this.client.get(`${this.baseUrl}/api/anime/tags?page=${page}&perPage=${perPage}`, {
+        headers: this.Headers(),
+      })
+
+      return response.data
     } catch (err: any) {
       throw new Error(err)
     }
