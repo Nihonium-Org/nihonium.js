@@ -238,6 +238,25 @@ export interface IBasicKuroji {
 	kitsu?: IBasicKitsu;
 }
 
+export interface IFranchise {
+  cover?: string,
+  banner?: string,
+  title?: string,
+  franchise?: string,
+  description?: string,
+}
+
+export type Weekday = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
+
+export type TSchedule = {
+  [key in Weekday]: IScheduleData
+}
+
+export interface IScheduleData {
+  current: boolean
+  data: IBasicKuroji[]
+}
+
 /*
   Shikimori
 */
@@ -435,6 +454,16 @@ export enum ESourceType {
 export interface Response<T> {
 	pageInfo: PageInfo;
 	data: T;
+}
+
+export interface SearchResponse<T> extends Response<T> {
+  franchise: FranchiseResponse
+}
+
+export interface FranchiseResponse {
+  pageInfo: PageInfo
+  franchise: IFranchise
+  data: IBasicKuroji[]
 }
 
 export interface PageInfo {
