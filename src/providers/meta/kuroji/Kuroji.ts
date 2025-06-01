@@ -1,121 +1,130 @@
-import { Provider } from '../../../models'
-import type { ISource } from '../../../models/types'
-import { convertFilterToParams, type FilterDto } from './types/FilterDto'
-import type { Response, EProvider, IBasicKuroji, IEpisode, IKuroji, IProvider } from './types/types'
+import type { ISource } from '../../../types/provider';
+import { MetaProvider } from '../../base';
+import { type FilterDto, convertFilterToParams } from './types/FilterDto';
+import type {
+	EProvider,
+	IBasicKuroji,
+	IEpisode,
+	IKuroji,
+	IProvider,
+	Response,
+} from './types/types';
 
-class Kuroji extends Provider {
-  override readonly name = 'Kuroji';
-  protected override baseUrl = '';
+class Kuroji extends MetaProvider {
+	override readonly name = 'Kuroji';
+	protected override baseUrl = '';
+	protected override headers = {
+		Accept: 'application/json',
+		'Content-Type': 'application/json',
+		'User-Agent': 'nihonium client (https://github.com/Nihonium-Org/nihonium.js)',
+	};
 
-  public setBaseUrl(url: string) {
-    this.baseUrl = url;
-  }
+	public setBaseUrl(url: string) {
+		this.baseUrl = url;
+	}
 
-  async getInfo(id: number): Promise<IKuroji> {
-    try {
-      const response = await this.client.get(`${this.baseUrl}/api/anime/info/${id}`, {
-        headers: this.Headers(),
-      });
+	async getInfo(id: number): Promise<IKuroji> {
+		const { data, error } = await this.client.get<IKuroji>(`${this.baseUrl}/api/anime/info/${id}`, {
+			headers: this.headers,
+		});
 
-      return response.data;
-    } catch (err: any) {
-      throw new Error(err)
-    }
-  }
+		if (error || !data) throw error;
 
-  async search(q: string): Promise<Response<IBasicKuroji>> {
-    try {
-      const response = await this.client.get(`${this.baseUrl}/api/anime/search/${q}`, {
-        headers: this.Headers(),
-      })
+		return data;
+	}
 
-      return response.data
-    } catch (err: any) {
-      throw new Error(err)
-    }
-  }
+	async search(q: string): Promise<Response<IBasicKuroji>> {
+		const { data, error } = await this.client.get<Response<IBasicKuroji>>(
+			`${this.baseUrl}/api/anime/search/${q}`,
+			{
+				headers: this.headers,
+			}
+		);
 
-  async getFilter(filter: FilterDto): Promise<Response<IBasicKuroji>> {
-    try {
-      const params = convertFilterToParams(filter);
-      const queryString = '?' + new URLSearchParams(params).toString();
-      const response = await this.client.get(`${this.baseUrl}/api/anime/filter${queryString}`, {
-        headers: this.Headers(),
-      });
+		if (error || !data) throw error;
 
-      return response.data;
-    } catch (err: any) {
-      throw new Error(err)
-    }
-  }
+		return data;
+	}
 
-  async getEpisodes(id: number): Promise<IEpisode[]> {
-    try {
-      const response = await this.client.get(`${this.baseUrl}/api/anime/info/${id}/episodes`, {
-        headers: this.Headers(),
-      })
+	async getFilter(filter: FilterDto): Promise<Response<IBasicKuroji>> {
+		const params = convertFilterToParams(filter);
+		const queryString = `?${new URLSearchParams(params).toString()}`;
+		const { data, error } = await this.client.get<Response<IBasicKuroji>>(
+			`${this.baseUrl}/api/anime/filter${queryString}`,
+			{
+				headers: this.headers,
+			}
+		);
 
-      return response.data
-    } catch (err: any) {
-      throw new Error(err)
-    }
-  }
+		if (error || !data) throw error;
 
-  async getEpisode(id: number, ep: number): Promise<IEpisode> {
-    try {
-      const response = await this.client.get(`${this.baseUrl}/api/anime/info/${id}/episodes/${ep}`, {
-        headers: this.Headers(),
-      })
+		return data;
+	}
 
-      return response.data
-    } catch (err: any) {
-      throw new Error(err)
-    }
-  }
+	async getEpisodes(id: number): Promise<IEpisode[]> {
+		const { data, error } = await this.client.get<IEpisode[]>(
+			`${this.baseUrl}/api/anime/info/${id}/episodes`,
+			{
+				headers: this.headers,
+			}
+		);
 
-  async getProviders(id: number): Promise<IProvider[]> {
-    try {
-      const response = await this.client.get(`${this.baseUrl}/api/anime/info/${id}/providers`, {
-        headers: this.Headers(),
-      })
+		if (error || !data) throw error;
 
-      return response.data
-    } catch (err: any) {
-      throw new Error(err)
-    }
-  }
+		return data;
+	}
 
-  async getProvider(id: number, ep: number): Promise<IProvider> {
-    try {
-      const response = await this.client.get(`${this.baseUrl}/api/anime/info/${id}/providers/${ep}`, {
-        headers: this.Headers(),
-      })
+	async getEpisode(id: number, ep: number): Promise<IEpisode> {
+		const { data, error } = await this.client.get<IEpisode>(
+			`${this.baseUrl}/api/anime/info/${id}/episodes/${ep}`,
+			{
+				headers: this.headers,
+			}
+		);
 
-      return response.data
-    } catch (err: any) {
-      throw new Error(err)
-    }
-  }
+		if (error || !data) throw error;
 
-  async getSources(id: number, ep: number, provider: EProvider): Promise<ISource> {
-    try {
-      const response = await this.client.get(`${this.baseUrl}/api/anime/watch/${id}/episodes/${ep}?provider=${provider}`, {
-        headers: this.Headers(),
-      })
+		return data;
+	}
 
-      return response.data
-    } catch (err: any) {
-      throw new Error(err)
-    }
-  }
+	async getProviders(id: number): Promise<IProvider[]> {
+		const { data, error } = await this.client.get<IProvider[]>(
+			`${this.baseUrl}/api/anime/info/${id}/providers`,
+			{
+				headers: this.headers,
+			}
+		);
 
-  private Headers() {
-    return {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-    }
-  }
+		if (error || !data) throw error;
+
+		return data;
+	}
+
+	async getProvider(id: number, ep: number): Promise<IProvider> {
+		const { data, error } = await this.client.get<IProvider>(
+			`${this.baseUrl}/api/anime/info/${id}/providers/${ep}`,
+			{
+				headers: this.headers,
+			}
+		);
+
+		if (error || !data) throw error;
+
+		return data;
+	}
+
+	async getSources(id: number, ep: number, provider: EProvider): Promise<ISource> {
+		const { data, error } = await this.client.get<ISource>(
+			`${this.baseUrl}/api/anime/watch/${id}/episodes/${ep}?provider=${provider}`,
+			{
+				headers: this.headers,
+			}
+		);
+
+		if (error || !data) throw error;
+
+		return data;
+	}
 }
 
 export default Kuroji;
