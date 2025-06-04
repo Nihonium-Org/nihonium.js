@@ -7,7 +7,7 @@ import type {
 	MediaSource,
 	MediaStatus,
 	MediaType,
-} from './Filter';
+} from './filter';
 
 export class FilterDto {
 	constructor(partial?: Partial<FilterDto>) {

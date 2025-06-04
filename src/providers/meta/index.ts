@@ -1,5 +1,5 @@
-import Kuroji from './kuroji/Kuroji';
+import Kuroji from "./kuroji/kuroji";
 
 export default {
-	Kuroji,
+  Kuroji,
 };
