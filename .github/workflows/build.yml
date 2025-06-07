@@ -18,10 +18,10 @@ jobs:
           node-version: 20
 
       - name: Install deps
-        run: bun install
+        run: yarn install
 
       - name: Build
-        run: bun run build
+        run: yarn build
 
       - name: Commit dist
         run: |
